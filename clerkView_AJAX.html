@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset = "utf-8">
+      <title>Search Results</title>
+   <style type = "text/css">
+         body  { font-family: sans-serif;
+                 background-color: lightyellow; } 
+         table { background-color: lightgreen; 
+                 border-collapse: collapse; 
+                 border: none; }
+         td    { padding: 5px; border: 1px solid gray;}
+		 td:nth-child(8) {
+			background-color: lightyellow; 
+			border: none;
+		}
+         tr:nth-child(odd) {
+                 background-color: lightblue; }
+      </style>
+	  <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	  <script type="text/javascript">
+	  $(document).ready(function () {
+
+		var ajaxCall = function () {
+			$.ajax({    
+				type: "GET",
+				url: "clerkView.php",             
+				dataType: "html",   //expect html to be returned                
+				success: function(response){                    
+				$("#responsecontainer").html(response); 
+
+				$('.remove_order').click(function() {
+				
+					var $row = $(this).closest('tr');
+					var oid = $row.find('#order_id').text();
+					var pid = $row.find('#product_id').text();
+				
+					$.ajax({
+						type: "GET",
+						url: "setflag.php?order_id="+oid+"&product_id="+pid,
+					});
+				
+			    });
+				
+
+				}
+			});
+		}
+		setInterval(ajaxCall, 3000);
+
+	  
+	  });
+	  </script>
+   </head>
+<body>
+  <div id="responsecontainer"></div>
+</body>
+</html>
